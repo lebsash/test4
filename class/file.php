@@ -75,7 +75,7 @@
 
 			function file_upload(){
 				global $Messages;
-				var_dump($this->FileSizeMB);
+
 				if ($this->FileSizeMB > 5 ) {
 					$Messages->Set_upoad_status(false);
 					$Messages->Add_Error("danger","Простите, для тестовой задачи слишком большой объем");

@@ -7,7 +7,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/class/route.php");				// Класс для �
 require($_SERVER["DOCUMENT_ROOT"]."/class/file.php");				// Класс для работы с файлом
 require($_SERVER["DOCUMENT_ROOT"]."/class/file_generator.php");		// Класс генерации файлов для тестирования
 require($_SERVER["DOCUMENT_ROOT"]."/class/calc.php");				// Класс расчета повторных слов в файле
-require($_SERVER["DOCUMENT_ROOT"]."/class/database.php");			// Класс работы с БД
+
 
 
 require($_SERVER["DOCUMENT_ROOT"]."/template/errors.php");			// Класс для отображения сообщений

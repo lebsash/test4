@@ -125,47 +125,19 @@ class MainTemplate
 
 	function get_btn_to_Process($type){
 
-		global $Params;	
-		global $route;
-		$dop_text = 'Файл можно исследовать данным методом';
-		$disbut	  = '';
-
-		switch ($type) {
-
-
-			case 'big':
-					if (($_FILES['userfile']['size']/1024)/1024 > (float)$Params->filesize_max_for2stVariant) {
-					$dop_text = 'Из-за размера НЕ рекомендуется исследовать файл данным методом';
-					$disbut	  = 'disabled';
-					}
 
 				return '
-				<p class="card-text"><small class="text-muted">'.$dop_text.'</small></p>
+				<p class="card-text"><small class="text-muted">Файл можно исследовать данным методом</small></p>
 
 				<form enctype="multipart/form-data" action="" method="POST">  		
     		    <input type="hidden" name="process_file" value="'.$this->return_uploaded_filename().'">    		
     		    <input type="hidden" name="process_type" value="big">    		
-				<button type="submit" class="btn btn-primary" '.$disbut.'>Начать обработку</button>
+				<button type="submit" class="btn btn-primary" >Начать обработку</button>
 				</form>
 				';
 
-				//break;
-			default:
-					if (($_FILES['userfile']['size']/1024)/1024 > (float)$Params->filesize_max_for1stVariant) {
-					$dop_text = 'Из-за размера НЕ рекомендуется исследовать файл данным методом';
-					$disbut	  = 'disabled';
-					}
-				return '
-				<p class="card-text"><small class="text-muted">'.$dop_text.'</small></p>
-
-				<form enctype="multipart/form-data" action="" method="POST">  		
-    		    <input type="hidden" name="process_file" value="'.$this->return_uploaded_filename().'">    		
-    		    <input type="hidden" name="process_type" value="small">    		
-				<button type="submit" class="btn btn-primary" '.$disbut.'>Начать обработку</button>
-				</form>
-				';
 				
-		}
+		
 	}
 
 
@@ -181,9 +153,12 @@ class MainTemplate
   		<div class="card">
     		 <div class="card-header bg-dark text-white mb-3"> ВАРИАНТ №1 </div>
     		<div class="card-body">
-      		<h4 class="card-title">Файлы небольшого размера</h4>
-      		<p class="card-text">Для обработки файлов небольшого размера можно непосредственно загрузить все слова из файла в массив, и обработать с помощью array_count_values</p>
-      		'.$this->get_btn_to_Process("small").'
+      		<h4 class="card-title">Обычный вариант</h4>
+      		<p class="card-text">В основе метода лежит блочное чтение данных из файла, конкантенация пограничных слов в блоках,
+      		обработка полученных из блоков массивов при помощи array_count_values и дальнешнее включение результата обработки в общим массив 
+			данных на выходе. 
+      		</p>
+      		'.$this->get_btn_to_Process("big").'
 
     		</div>
   		</div>
@@ -191,10 +166,14 @@ class MainTemplate
   		<div class="card">
     		<div class="card-header bg-dark text-white mb-3"> ВАРИАНТ №2 </div>
     		<div class="card-body">
-      		<h4 class="card-title">Файлы большого размера</h4>
-      		<p class="card-text">В случае работы с файлами большого размера необходимо воспользоваться данным вариантом. Считываем боки из файла, сохраняем в БД (например MySQL) 
-      		при помощи запроса типа INSERT INTO t1 (a,b,c) VALUES (1,2,3) ON DUPLICATE KEY UPDATE c=c+1;</p>
-      		'.$this->get_btn_to_Process("big").'
+      		<h4 class="card-title">Файлы громадных размеров</h4>
+      		<p class="card-text">В случае работы с файлами огромных размеров можно воспользоваться данным вариантом. 
+      		Считываем блоки информации из файла, производим сохранение в БД (например MySQL) 
+      		при помощи запроса типа INSERT INTO t1 (a,b,c) VALUES (1,2,3) ON DUPLICATE KEY UPDATE c=c+1;
+			Однако, данный метод при линейном применении очень медлительный и его использование возможно при распараллеливании
+			процессов на соответствующем языке программированания. 
+      		</p>
+      		
     		</div>
   		</div>
 

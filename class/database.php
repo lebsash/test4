@@ -5,12 +5,22 @@ class Database {
   
   private $conn = false;
   private $data = array();
+  private $db;
    
- 
+  private $Myhost;
+  private $Myuser;
+  private $Mypass;
+  private $Mybase;
   public function __construct($host, $user, $pass, $base) {
-    $this->conn = mysql_connect($host, $user, $pass) or die(mysql_error());
-    mysql_select_db($base, $this->conn);
-    mysql_query("SET NAMES 'utf8'", $this->conn);
+    // $this->db = new mysqli($host, $user, $pass, $base);
+    // $this->conn = mysql_connect($host, $user, $pass) or die(mysql_error());
+   // mysql_select_db($base, $this->conn);
+    //mysql_query("SET NAMES 'utf8'", $this->conn);
+    $this->Myhost = $host;
+    $this->Myuser = $user;
+    $this->Mypass = $pass;
+    $this->Mybase = $base;
+
   }
  
 
@@ -23,12 +33,41 @@ class Database {
  
 
  public function query($request) {    
-    
-    $result = mysql_query($request) or die("Cannot execute request to the database '{$request}'");
-    $out    = mysql_fetch_assoc($result);
-    return $out;
+    $this->db = new mysqli($this->Myhost, $this->Myuser, $this->Mypass, $this->Mybase);
+
+    $result = $this->db->query($request) or die("Cannot execute request to the database '{$request}'");
+    $this->db->close();
+    return $result;
+
   }
  
+ public function multi_query($request) {    
+    
+    //$result = $this->db->multi_query($request) or die("Cannot execute request to the database '{$request}'");
+  $this->db = new mysqli($this->Myhost, $this->Myuser, $this->Mypass, $this->Mybase);
+
+  $result = $this->db->multi_query($request);
+
+
+
+
+    do {
+        /* получаем первый результирующий набор */
+        if ($result = $this->db->store_result()) {
+            while ($row = $result->fetch_row()) {
+               
+            }
+            $result->free();
+        }
+        /* печатаем разделитель */
+        if ($this->db->more_results()) {
+            
+        }
+    } while ($this->db->next_result());
+    $this->db->close();
+    return true;
+    
+  }
  
  
   public function select($request, $data = array()) {

@@ -9,35 +9,66 @@
 			}
 
 
-			// Функция для обработки небольших файлов
-			// Считает повторы слов в файле без учета регистра и цифр, сортирует массив с результатом
-			function easy_calc($filename) {
+			function str_clearning($line){
+				// Удаляем из строки все цифры
+				// Так же избавляемся от заков препинания
+				$line = preg_replace("/[^а-яёa-z\s]/iu", '', $line);
 
-						global $Params;
-						global $Messages;
+				// Корректируем регистр в строке
+				$line = mb_strtolower($line);
+
+				// Считаем повторы и сортируем результат
+				$words  = explode(' ', $line);
+				return $words;
+			}
+
+
+
+
+
+
+			// Функция для обработки больших данных
+			function main_calc($filename) {
+				global $Messages;
+				global $Params;
+				$Res_Array = array();	
+				// Читаем данные из входного файла
+				if (file_exists($Params->filedir.$filename)  && is_readable ($Params->filedir.$filename) ) {
 
 						$line = '';
+						$f 	  = fopen($Params->filedir.$filename, "r");
 
-						// Читаем данные из входного файла
-						if (file_exists($Params->filedir.$filename)) {
-
-						$f = fopen($Params->filedir.$filename, "r");
+						$last_word = ''; // Крайнее слово в выборке для конкантенации при блочном чтении
 						while(!feof($f)) { 
-							$line .= 	fgets($f);						  					   
+							$line  = htmlentities(fread($f, 599));						
+							$words = $this->str_clearning($line);
+
+							$words[0]  = $last_word.$words[0];
+							
+						
+
+							$last_word = array_pop($words);
+
+							$counts = array_count_values($words);
+							foreach ($counts as $key => $value) {
+
+								if (array_key_exists($key, $Res_Array)) {
+									// ключ найден, увеличиваем счетчик
+									$Res_Array[$key] = (int) $Res_Array[$key] + (int)$value;
+								} else {
+									$Res_Array[$key] = (int)$value;
+								}
+							}
+
 						}
-						fclose($f);
 
-						// Удаляем из строки все цифры
-						$line = preg_replace("/[0-9]{1}/", "", $line); 
-
-						// Корректируем регистр в строке
-						$line = mb_strtolower($line);
-
-						// Считаем повторы и сортируем результат
-						$words  = explode(' ', $line);
-						$counts = array_count_values($words);
-
-						arsort($counts);
+						// Отдельно необходимо обработать крайнее слово
+						if (array_key_exists($last_word, $Res_Array)) {
+							$Res_Array[$last_word] = $Res_Array[$last_word] + 1;
+						} else {
+							$Res_Array[$last_word] = 1;
+						}
+						arsort($Res_Array);
 
 						//Удаляем старый итог
 						if (file_exists($Params->filedir_forTest.'output.txt'))
@@ -45,13 +76,12 @@
 								$Messages->Add_Error("danger"," Не могу удалить старый файл output.txt");		
 							}
 
-
 						// Сохраняем в итоговый файл
 						$f = fopen($Params->filedir_forTest.'output.txt', "a");
-							foreach ($counts as $key => $val) {
+							foreach ($Res_Array as $key => $val) {
 								if (isset($val)&& strlen($key)>0) fwrite($f, "%".$key."% - %".$val."%"."\r\n".PHP_EOL);
 							}
-
+						unset($Res_Array);	
 						fclose($f);
 
 						// Устанавливаем статус для отображения результата
@@ -66,42 +96,12 @@
 							$Messages->Set_output_status(false);
 						}
 
-						
-
 			}
 
-			// Функция для обработки больших данных
-			function full_calc($filename) {
-				global $Messages;
-				global $Params;
-
-				$db = new Database($Params->dbhost, $Params->dbuser, $Params->dbpass, $Params->dbbase);
-
-				$sql = 'SHOW TABLES LIKE "test1"';			
-				$result = $db->query($sql);
-				
-				if ($result){
-					$res = $db->query('ALTER TABLE test1');
-
-				} else {
-
-				// Создаем таблицу
-				$sql = "CREATE TABLE test1( ".
-       				   "Col INT NOT NULL, ".
-       				   "Ntext VARCHAR(250) NOT NULL, ".       				   
-       				   "PRIMARY KEY ( NText (250) ) ); ";
-				$result = $db->query($sql);				
-				}
-
-				// Чтение блоков из файла с размещением в БД
-
-				// Выборка из БД
-
-				// Отдаем результат
+			
 
 
-
-			}
+		
 
 	}
 

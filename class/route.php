@@ -42,9 +42,8 @@
 				// Маршрут для работы с маленьким файлом
 				if (isset($_POST['process_type']) && isset($_POST['process_file'])) {
 						$newCalc = new Calculation;
-						if ($_POST['process_type'] == 'small') {$newCalc->easy_calc($_POST['process_file']); }
-							else if ($_POST['process_type'] == 'big') {$newCalc->full_calc($_POST['process_file']);}
-								else $Messages->Add_Error("danger","Неверный параметр обработки данных");
+					     if ($_POST['process_type'] == 'big') {$newCalc->main_calc($_POST['process_file']);}
+									   else $Messages->Add_Error("danger","Неверный параметр обработки данных");
 				}
 
 

@@ -2,7 +2,7 @@
 
 class Settings {
 
-			private $root;
+			public $root;
 
 
 			public $filedir_uploads_part = 'uploads';    // Наименование каталога, в который сохраняются файлы при загрузке

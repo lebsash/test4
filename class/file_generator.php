@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * File_generator Class
+ * Класс генерации файлов для тестирования
+ *
+ * @version 0.1
+ */
+
 	class File_generator {
 
 			
@@ -9,6 +16,8 @@
 				$this->str_characters = array (0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 			}
 
+			
+			// Метод возвращает слово строку заданой длины
 			function random_string($length) {
 	
 				if (!is_int($length) || $length < 0){
@@ -23,7 +32,7 @@
     			return $string;
 			}
 
-
+			// Метод генерирует строки из случайных слов
 			function block_generator($length) {
 				if (!is_int($length) || $length < 0){
         			return false;
@@ -39,6 +48,8 @@
 			}
 
 
+			// Метод для получения случайного количества строк
+			// в зависимости от типа генерируемого файла
 			function get_stringscount_byType ($type = null){
 				switch ($type) {
 					case 'small':
@@ -53,9 +64,11 @@
 				}
 			}
 
-			function get_filename($type){
+			// Возвращаем имя файла в зависимости от типа генерации
+			function get_filename($type, $TestParam = null){
 				global $filedir_forTest;
 				global $Params;
+				if (!isset($Params)) {$Params = $TestParam;}
 
 				switch ($type) {
 					case 'small':
@@ -70,11 +83,10 @@
 				}
 			}
 
+			// Метод, формирующий ссылки на файлы в зависимости от их наличия
 			function links_to_file(){
-				//global $filedir_forTest_part;
-				//global $filedir_forTest;
-				global $Params;
 
+				global $Params;
 
 				$retlink 	 = '';
 				$first_exist = false;
@@ -96,6 +108,7 @@
 			}
 
 
+			// Метод удаления тестового файла
 			function del_file($filename){
 				global $Messages;
 				if(file_exists($filename)) {					
@@ -105,11 +118,15 @@
 				}
 			}
 
-
-			function gen_to_file($type) {
+			// Метод генерации тестового файла
+			function gen_to_file($type, $Test_new_filename = null) {
 				global $Messages;
 				$strings_count = $this->get_stringscount_byType($type);
+				if (strlen($Test_new_filename) == null){				
 				$new_filename  = $this->get_filename($type);
+				}
+
+				if (strlen($Test_new_filename) > 10){$new_filename = $Test_new_filename;}
 				
 				$res = $this->del_file($new_filename);	 // Удаляем файл, если он существует
 

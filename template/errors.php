@@ -1,12 +1,19 @@
 <?php
 
+/**
+ * Message's Class
+ * Класс для отображения сообщений об ошибках, хранения информации о файле и его статусе
+ *
+ * @version 0.1
+ */
+
 class Error_view {
 
-			private $errors = array();		// Массив для гранения сообщений об ошибках/успехах
+			private $errors = array();		// Массив для хранения сообщений об ошибках/успехах
 			private $inf 	= array();		// Массив для хранения информации о файлах
-			public $file_status;			// Статус загруженного файла
+			public  $file_status;			// Статус загруженного файла
 			private $out_status;			// Статус выходного файла
-			public $file_name;				// Имя загруженного файла
+			public  $file_name;				// Имя загруженного файла
 			function __construct()
 			{
 				$this->file_status = false;
@@ -14,57 +21,66 @@ class Error_view {
 				$this->file_name   = '';
 			}
 
-
+			// Добавляем ошибку в массив
 			function Add_Error ($level, $text) {
 				$this->errors[] = $this->ErrorMessage($level, $text);
 			}
 
+			// Добавляем информацию о файле в массив
 			function Add_infoCard($file){
 				$this->inf[] = $this->InfoMessage($file);
 			}
 
+			// Сохраняем имя файла (входящий)
 			function Add_fileName($name){
 				$this->file_name = $name;
 			}
 
+
+			// Возвращаем имя входящего файла
 			function Return_fileName(){
 				return $this->file_name;
 			}
 
-
+			// Возвращяем список ошибок для отображения
 			function Return_errors() {
 				return implode ("<br>", $this->errors);
 			}
 
+			// Возвращаем информацию о файлах для отображения
 			function Return_infos() {
 				return implode ("<br>", $this->inf);
 			}
 
+			// Возвращаем статус загрузки входящего файла
 			function Get_upoad_status(){
 				return $this->file_status;
 			}
 
+			// Устанавливаем статус загрузки входящего файла
 			function Set_upoad_status($status){
 				$this->file_status=$status;
 			}
 
+			// Возвращаем статус готовности исходящего файла
 			function Get_output_status(){
 				return $this->out_status;
 			}
 
+			// Устанавливаем статус готовности исходящего файла
 			function Set_output_status($status){
 				$this->out_status=$status;
 			}
 
 
-
+			// Устанавливаем статус сообщения об ошибке
 			function Get_Message_status($level){
 				switch ($level) {
 					case 'danger':
 							return 'ОШИБКА!';
-							break;
+							break;				
 					case 'success':
-							return 'УСПЕХ';
+							return 'УСПЕХ!';
 							break;
 					default:
 							return '';
@@ -72,6 +88,8 @@ class Error_view {
 				}
 			}
 
+
+			// Отображение информации о файле
 			function InfoMessage($file){
 				
 				return '
@@ -104,6 +122,7 @@ class Error_view {
 			}
 
 
+			// Отображение ошибки
 			function ErrorMessage($level, $text){
 
 				return '
@@ -117,7 +136,7 @@ class Error_view {
 
 			}
 
-
+			// Отображение кнопки для удаления файоа
 			function form_del_file($file) {
 				return '
 				<form enctype="multipart/form-data" action="" method="POST">  		

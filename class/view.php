@@ -1,6 +1,12 @@
 <?php
-require($_SERVER["DOCUMENT_ROOT"]."/template/temp.php");
+/**
+ * View Class
+ * Класс сборки шаблона
+ *
+ * @version 0.1
+ */
 
+require_once ($_SERVER["DOCUMENT_ROOT"]."/template/temp.php");
 
 class View 
 {

@@ -1,14 +1,21 @@
 <?php
 
+/**
+ * MyFile Class
+ * Класс для работы с файлом 
+ *
+ * @version 0.1
+ */
+
 	class MyFile
 	{
 
 			
-			private $FileName;
-			private $FileSize;
-			private $FileType;
-			private $FileSizeMB;
-			private $FileSizeGB;
+			private $FileName;		// Имя загруженного файла
+			private $FileSize;	    // Размер загруженного файла
+			private $FileType;		// Тип загруженного файла
+			private $FileSizeMB;	// Размер загруженного файла в MB
+			private $FileSizeGB;	// Размер загруженного файла в GB
 			function __construct()
 			{
 				
@@ -17,9 +24,10 @@
 	 			$this->FileType   = $_FILES['userfile']['type'];
 	 			$this->FileSizeMB = $this->Size_in_MB($_FILES['userfile']['size']);
 	 			$this->FileSizeGB = $this->Size_in_MB($_FILES['userfile']['size']);
-
 	 			$this->FileSize_control();
 			}
+
+
 
 			function FileSize_control(){
 				if ( !($this->Size_in_GB($this->FileSize) < 2)){
@@ -55,6 +63,7 @@
 			}
 
 
+			// Метод удаления загруженного файла
 			function file_delete($filename){
 				global $Messages;
 				global $Params;
@@ -73,6 +82,7 @@
 
 			}
 
+			// Метод загрузки файла
 			function file_upload(){
 				global $Messages;
 

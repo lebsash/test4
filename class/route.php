@@ -1,6 +1,11 @@
 <?php
 
-
+/**
+ * Route Class
+ * Класс обработки маршрутов
+ *
+ * @version 0.1
+ */
 
 
 	class Route
@@ -39,7 +44,7 @@
 				}
 
 
-				// Маршрут для работы с маленьким файлом
+				// Маршрут для работы с файлом
 				if (isset($_POST['process_type']) && isset($_POST['process_file'])) {
 						$newCalc = new Calculation;
 					     if ($_POST['process_type'] == 'big') {$newCalc->main_calc($_POST['process_file']);}

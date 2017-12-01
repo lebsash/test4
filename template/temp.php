@@ -1,12 +1,18 @@
 <?php
 
+/**
+ * MainTemplate Class
+ * Класс работы с шаблонами отображения
+ *
+ * @version 0.1
+ */
 
 class MainTemplate 
 {
 	
 	function __construct()
 	{
-		# code...
+		
 	}
 
 	function main_part(){
@@ -14,19 +20,25 @@ class MainTemplate
 		
 	}
 
+	// Возвращаем для отбражения массив ошибок
 	function Errors(){
-		global $Messages;
+		global $Messages;		
 		return $Messages->Return_errors();
 	}
 
+	// Возвращаем для отбражения массив данных о файлах
 	function infos(){
 		global $Messages;
 		return $Messages->Return_infos();
 	}
+
+	// Возвращаем для отбражения наименование загруженного файла
 	function return_uploaded_filename(){
 		global $Messages;
 		return $Messages->Return_fileName();
 	}
+
+
 
 	function header()
 	{
@@ -55,7 +67,7 @@ class MainTemplate
 		</html>'; 
 	}
 
-
+	// Форма загрузки файла
 	function getfile_form()
 	{
 		$max_filesize = 3*1024*1024;
@@ -71,10 +83,7 @@ class MainTemplate
 	}
 
 
-
-
-
-
+	// Оформление блока с формой загрузки файла
 	function card_with_form(){
 		return '
 		<div class="card" style="min-width: 200px;">
@@ -88,7 +97,7 @@ class MainTemplate
 		</div>';
 	}
 
-
+	// Оформление блока генерации тестовых файлов
 	function gen_files_forTest() {
 		global $File_gen;
 		return '
@@ -122,7 +131,7 @@ class MainTemplate
 
 
 
-
+	// Оформление кнопки начала обработки файла
 	function get_btn_to_Process($type){
 
 
@@ -180,7 +189,7 @@ class MainTemplate
 		';
 	}
 
-
+	// Блок отображения результата работы
 	function card_outfile(){
 		global $Messages;
 		global $Params;
@@ -199,7 +208,7 @@ class MainTemplate
 	}
 
 
-
+	// Метод сбора основного блока отображения данных
 	function card_container(){
 		return '
 		<div class="container">

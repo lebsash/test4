@@ -60,7 +60,6 @@
 							$last_word = array_pop($words);
 
 							$counts = array_count_values($words);
-							var_dump($counts);
 
 							foreach ($counts as $key => $value) {
 

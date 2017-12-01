@@ -1,0 +1,29 @@
+<phpunit 
+    bootstrap="bootstrap.php"
+    colors="true"
+    stopOnFailure="false"
+>
+
+    <testsuite name="Main Test Suite">
+        <directory>./</directory>
+    </testsuite>
+    
+    
+     <filter>
+      <whitelist processUncoveredFilesFromWhitelist="true">
+      <directory suffix=".php">/web/sites/test/test4/tests</directory>
+      </whitelist>
+    </filter>
+    
+
+    
+    <logging>
+        
+        <log type="coverage-html" target="/web/sites/test/test4/logs/report" charset="UTF-8"
+            yui="true" highlight="true"
+            lowUpperBound="50" highLowerBound="80"/>
+        <log type="coverage-clover" target="/web/sites/test/test4/logs/coverage.xml"/>    
+        <log type="testdox-text" target="/web/sites/test/test4/logs/testdox.txt"/>
+    </logging>
+    
+</phpunit>
